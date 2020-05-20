@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+{% block expenseview %}
+<h2>MANAGE YOUR BILL</h2>
+<div class="billdiv">
+    <form action='{% url "add expense" %}' method='post'>
+
+    <div class="topdiv">
+        <input name="place" type="text">
+        <input name="date" type="date">
+    </div>
+    <div class="middlediv">
+        <table id="item-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="row0">
+                    <td><input name="name0" type="text" class="form-input name"></td>
+                    <td><select name="cat0" class="form-input cat">
+                        <option value="gro">Grocery</option>
+                        <option value="sna">Snack</option>
+                        <option value="ute">Utensils</option>
+                        <option selected value="oth">Other</option>
+                    </select></td>
+                    <td><input name="qty0" type="number" class="form-input qty" oninput="calculate()"></td>
+                    <td><input name="price0" type="number" step=".01" class="form-input price" oninput="calculate()"></td>
+                </tr>
+            </tbody>
+        </table> 
+    </div>
+    <div class="bottomdiv">
+        <input name ="total" type="number" id="total" readonly>
+        <button onclick="addItem()" id="add_row" type="button">+</button>
+        <button onclick="removeItem();calculate()" id="remove_row" type="button">x</button>
+    </div>
+    <div class="save">
+        <input name="submit" type="submit" value="submit">
+    </div>
+    {% csrf_token %}
+    </form>
+</div>
+{% endblock expenseview %}

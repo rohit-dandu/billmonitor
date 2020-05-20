@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'expense.apps.ExpenseConfig',
+    'statx.apps.StatxConfig',
+    'userauth.apps.UserauthConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -122,3 +124,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'billmon/static'),
 ]
+
+LOGIN_REDIRECT_URL = '/'
