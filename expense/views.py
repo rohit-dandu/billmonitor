@@ -13,33 +13,6 @@ def expense(request):
     # return HttpResponse("<h1>BillMonitor!</h1>")
     return render(request, 'expense/expense.html')
 
-# def add_expense(request):
-#     # Get the values from the request
-#     values = list(request.POST.dict().values())
-#     print(values)
-#     place = values.pop(0)
-#     date = datetime.datetime.strptime(values.pop(0), "%Y-%m-%d").date()
-#     # Pop the last two values. token and submit
-#     values.pop()
-#     values.pop()
-#     # Total for the expense
-#     total = Decimal(values.pop())
-
-#     eb = Expense(place=place, date=date, total=total, user=request.user)
-#     eb.save()
-#     for i in range(0, len(values)-1):
-#         if len(values) > 0:
-#             name, cat, qty, price = values[0:4]
-#             ei = ExpenseItem(name=name, category=cat, quantity=int(qty), price=Decimal(price), expense=eb)
-#             ei.save()
-#             print(name, cat, qty, price)
-#             del values[0:4]
-
-#     print(values)
-#     print(place, date)
-#     print(total)
-#     print(request.user)
-#     return HttpResponseRedirect('/')
 class Bill: 
     def __init__(self):
         self._place = None
