@@ -5,7 +5,9 @@ import datetime
 from decimal import Decimal
 from .models import Expense, ExpenseItem
 from django.views.generic import View
-
+from .totalContext import TotalContext
+from .dispatcher import Dispatcher
+from .totalInterceptor import TotalInterceptor
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -13,6 +15,7 @@ def expense(request):
     # return HttpResponse("<h1>BillMonitor!</h1>")
     return render(request, 'expense/expense.html')
 
+# Product
 class Bill: 
     def __init__(self):
         self._place = None
@@ -37,6 +40,7 @@ class Bill:
     def getTotal(self):
         return self._total
 
+# builder
 class Builder:
 
     def buildPlace(self): pass
@@ -45,6 +49,7 @@ class Builder:
     def buildTotal(self): pass
     def buildModel(self): pass
 
+# concrete builder
 class BillBuilder(View, Builder):
 
     def __init__(self, values, user):
@@ -86,6 +91,7 @@ class BillBuilder(View, Builder):
                 print(name, cat, qty, price)
                 del self.values[0:4]
 
+# bill director
 class BillDirector:
 
     _builder = None
@@ -103,10 +109,19 @@ class BillDirector:
 
 class BillView(View):
 
+    def onrequest(self):
+        context = TotalContext(self.request.user, self.request.POST['total'])
+        dispatcher = Dispatcher()
+        dispatcher.register(TotalInterceptor)
+        dispatcher.dispatch(context)
+
     def post(self, request, *args, **kwargs):
         values = list(request.POST.dict().values())
         billbuilder = BillBuilder(values, user=request.user)
         director = BillDirector()
         director.setBuilder(billbuilder)
         director.construct()
+        self.onrequest()
+        # print(request.POST['total'])
+        # print(str(self.request.user))
         return HttpResponseRedirect('/')
