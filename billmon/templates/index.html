@@ -4,6 +4,7 @@
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+        <script src="https://d3js.org/d3.v5.min.js"></script>
     </head>
     <body>
         <nav>
@@ -16,6 +17,11 @@
         {% endblock expenseview %}
         {% block statsview %}
         {% endblock statsview %}
+        <script>
+            var data = {Groceries: {{g}}, Snacks: {{s}}, Utensils:{{u}}, Other:{{o}}};
+            // var data = {a: {{g}}, b: {{s}}, c:{{u}}, d:{{o}}};
+        </script>
         <script src="{% static 'script0.js' %}"></script>
+        <script src="{% static 'dataviz.js' %}"></script>
     </body>
 </html>

@@ -4,16 +4,36 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from decimal import Decimal
 from .models import Expense, ExpenseItem
-from django.views.generic import View
+from django.views.generic import View, ListView
+from django.views.generic.detail import DetailView
 from .totalContext import TotalContext
 from .dispatcher import Dispatcher
 from .totalInterceptor import TotalInterceptor
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 @login_required(login_url='/login')
 def expense(request):
     # return HttpResponse("<h1>BillMonitor!</h1>")
-    return render(request, 'expense/expense.html')
+    expenses = [obj.id for obj in Expense.objects.filter(user=request.user)]
+    gro_total = 0
+    sna_total = 0
+    ute_total = 0
+    oth_total = 0
+    for expense in expenses:
+        gro_total += cal_total(ExpenseItem.objects.filter(expense_id=expense).filter(category='gro'))
+        sna_total += cal_total(ExpenseItem.objects.filter(expense_id=expense).filter(category='sna'))
+        ute_total += cal_total(ExpenseItem.objects.filter(expense_id=expense).filter(category='ute'))
+        oth_total += cal_total(ExpenseItem.objects.filter(expense_id=expense).filter(category='oth'))
+    print(gro_total, sna_total, ute_total, oth_total)
+    return render(request, 'expense/expense.html', {'g': gro_total, 's': sna_total, 'u': ute_total, 'o': oth_total})
+
+def cal_total(items):
+    total = 0
+    for o in items:
+        total += o.quantity * o.price
+        # total += o['quantity'] * o['price']
+    return total
 
 # Product
 class Bill: 
@@ -93,12 +113,9 @@ class BillBuilder(View, Builder):
 
 # bill director
 class BillDirector:
-
     _builder = None
-
     def setBuilder(self, builder):
         self._builder = builder
-
     # Assemble the bill
     def construct(self):
         self._builder.buildPlace()
@@ -122,6 +139,4 @@ class BillView(View):
         director.setBuilder(billbuilder)
         director.construct()
         self.onrequest()
-        # print(request.POST['total'])
-        # print(str(self.request.user))
         return HttpResponseRedirect('/')

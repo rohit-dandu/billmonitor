@@ -45,4 +45,13 @@
     {% csrf_token %}
     </form>
 </div>
+<h2>STATISTICS</h2>
+<div class="datadiv">
+    <div id="pie"></div>
+    <div>
+    <h3>Overall expenses</h3>
+    <p>
+        Groceries: {{g}}, Snacks: {{s}}, Utensils: {{u}}, Other: {{o}}
+    </p></div>
+</div>
 {% endblock expenseview %}
