@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'expense.apps.ExpenseConfig',
     'statx.apps.StatxConfig',
+    'history.apps.HistoryConfig',
     'userauth.apps.UserauthConfig',
     'django.contrib.admin',
     'django.contrib.auth',

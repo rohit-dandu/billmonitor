@@ -1,0 +1,12 @@
+{% block title %}All Expenses{% endblock title %}
+{% block content %}
+<h1>All Expenses</h1>
+<ul>
+{% for expense in object_list %}
+<!-- <script>
+    console.log(expense)
+</script> -->
+    <li><a href="history/{{ expense.id }}">ID</a> Place: {{ expense.place }}, Date: {{expense.date}}, Total: {{expense.total}}</li>
+{% endfor %}
+</ul>
+{% endblock content %}

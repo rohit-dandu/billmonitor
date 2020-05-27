@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', include('expense.urls')),
     path('', include('statx.urls')),
+    path('history/', include('history.urls')),
 ]

@@ -1,0 +1,7 @@
+{% block title %}Expense Items{% endblock title %}
+{% block content %}
+<h1>All Expenses</h1>
+{% for item in  %}
+    <li>{{ item.name }}</li>
+{% endfor %}
+{% endblock content %}
